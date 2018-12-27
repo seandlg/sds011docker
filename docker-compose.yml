@@ -1,0 +1,22 @@
+version: '3'
+services:
+  webapp:
+    image: webapp
+    build: ./webapp
+    container_name: webapp
+    volumes:
+    - DataVolume1:/data
+    depends_on:
+    - sensor
+    ports:
+    - "80:8080"
+  sensor:
+    image: sensor
+    build: ./sensor
+    container_name: sensor
+    volumes:
+    - DataVolume1:/data
+    devices:
+    - "/dev/ttyUSB0:/dev/ttyUSB0"
+volumes:
+  DataVolume1: {}
