@@ -1,5 +1,5 @@
 # Use an official node runtime as a parent image
-FROM node:8
+FROM node:lts-alpine
 
 # Create app directory
 WORKDIR /app
@@ -8,6 +8,7 @@ WORKDIR /app
 COPY ./app /app
 
 RUN npm install
+RUN npm install -g nodemon@1.18.9
 
 EXPOSE 8080
-CMD [ "npm", "start" ]
+CMD ["nodemon", "./dev/server.js"]

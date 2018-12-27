@@ -5,18 +5,44 @@ services:
     build: ./webapp
     container_name: webapp
     volumes:
-    - DataVolume1:/data
+    - mongodbvolume:/data
+    - /home/sean/Coding/DockerAQISensor/webapp/app:/app/dev/ # strictly for development purposes
     depends_on:
     - sensor
+    - mongodb
     ports:
     - "80:8080"
+    networks:
+      aqisensornet:
+        aliases:
+          - webapp
   sensor:
     image: sensor
     build: ./sensor
     container_name: sensor
     volumes:
-    - DataVolume1:/data
+    - mongodbvolume:/data
+    depends_on:
+    - mongodb
     devices:
     - "/dev/ttyUSB0:/dev/ttyUSB0"
+    networks:
+      aqisensornet:
+        aliases:
+          - sensor
+  mongodb:
+    image: mongodb
+    build: ./database
+    container_name: mongodb
+    volumes:
+    - mongodbvolume:/data/db
+    ports:
+    - "27017:27017"
+    networks:
+      aqisensornet:
+        aliases:
+          - database
 volumes:
-  DataVolume1: {}
+  mongodbvolume:
+networks:
+  aqisensornet:

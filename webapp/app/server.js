@@ -1,13 +1,24 @@
 'use strict';
 
 const express = require('express');
+const mongodb = require('mongodb');
 
 // Constants
+const config = require('./db.js');
+const client = mongodb.MongoClient;
 const PORT = 8080;
 const HOST = '0.0.0.0';
 const path = __dirname + '/views/';
-var router = express.Router();
-var Chart = require('chart.js');
+
+// Database
+client.connect(config.DB, function(err, db) {
+  if (err) {
+    console.log('Database is not connected.')
+  } else {
+    console.log('Database connected!')
+  }
+});
+
 
 // App
 const app = express();
@@ -29,6 +40,10 @@ app.get('/AQIData.txt', (req, res) => {
 });
 
 app.get('/AQIData.csv', (req, res) => {
+  res.sendFile("/data/AQIData.csv");
+});
+
+app.get('/AQIData.json', (req, res) => {
   res.sendFile("/data/AQIData.csv");
 });
 
