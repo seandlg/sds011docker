@@ -4,14 +4,16 @@ const express = require('express');
 const mongodb = require('mongodb');
 
 // Constants
-const config = require('./db.js');
+const url = 'mongodb://database:27017/sensordatadb'
 const client = mongodb.MongoClient;
 const PORT = 8080;
 const HOST = '0.0.0.0';
 const path = __dirname + '/views/';
 
 // Database
-client.connect(config.DB, function(err, db) {
+client.connect(url, {
+  useNewUrlParser: true
+}, function(err, db) {
   if (err) {
     console.log('Database is not connected.')
   } else {
@@ -44,7 +46,18 @@ app.get('/AQIData.csv', (req, res) => {
 });
 
 app.get('/AQIData.json', (req, res) => {
-  res.sendFile("/data/AQIData.csv");
+  client.connect(url, {
+    useNewUrlParser: true
+  }, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("SensorData");
+    dbo.collection("PMValues").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      res.send(result)
+      db.close();
+    });
+  });
 });
 
 app.listen(PORT, HOST);

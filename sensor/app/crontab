@@ -1,2 +1,2 @@
-* * * * * /usr/local/bin/python2.7 /app/sensor.py 2> /data/error.log
+* * * * * /usr/local/bin/python2.7 /app/sensor.py
 # An empty line is required at the end of this file for a valid cron file.

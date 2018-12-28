@@ -7,19 +7,18 @@ function httpGet(theUrl) { // synchronous, but doesn't matter for localhost
   return xmlHttp.responseText;
 }
 
-data = httpGet('AQIData.csv')
-data_array = data.split("\n").slice(0, -1)
-console.log(data_array)
+data = JSON.parse(httpGet('AQIData.json'))
+
 label_array = []
 pm25_array = []
 pm10_array = []
 
-for (ind in data_array) {
-  elem = data_array[ind]
-  columns = elem.split(",")
-  timestamp = columns[0]
-  pm25value = parseFloat(columns[1])
-  pm10value = parseFloat(columns[2])
+for (ind in data){
+  obj = data[ind]
+  console.log(obj)
+  timestamp = obj["readable_timestamp"]
+  pm25value = parseFloat(obj["pm25"])
+  pm10value = parseFloat(obj["pm10"])
   label_array.push(timestamp)
   pm25_array.push(pm25value)
   pm10_array.push(pm10value)

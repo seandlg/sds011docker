@@ -2,8 +2,10 @@
 # coding=utf-8
 # "DATASHEET": http://cl.ly/ekot
 from __future__ import print_function
+from datetime import datetime
 import serial, struct, sys, time
-import datetime
+import pymongo
+import time
 
 DEBUG = 0
 CMD_MODE = 2
@@ -45,12 +47,18 @@ def process_data(d):
     pm25 = r[0]/10.0
     pm10 = r[1]/10.0
     checksum = sum(ord(v) for v in d[2:8])%256
-    txt_text = ("Timestamp: {} --- PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}\n".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M'), pm25, pm10, "OK" if (checksum==r[2] and r[3]==0xab) else "NOK"))
-    csv_text = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M')) + "," + str(pm25) + "," + str(pm10) + "\n" if (checksum==r[2] and r[3]==0xab) else "NOK"
-    print(txt_text)
-    with open("/data/AQIData.txt", "a+") as txtoutputfile, open ('/data/AQIData.csv', "a+") as csvoutputfile:
-        txtoutputfile.write(txt_text)
-        csvoutputfile.write(csv_text)
+    if (checksum==r[2] and r[3]==0xab): # write to database if the checksum is okay
+        mongoClient = pymongo.MongoClient("mongodb://database:27017/sensordatadb")
+        mongoDB = mongoClient["SensorData"]
+        SensorDataCollection = mongoDB["PMValues"]
+        readable_timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
+        epoch_timestamp = int(time.time())
+        InsertableDict = {"epoch_timestamp": epoch_timestamp, "readable_timestamp": readable_timestamp, "pm25": pm25, "pm10": pm10}
+        x = SensorDataCollection.insert_one(InsertableDict)
+        mongoClient.close()
+        print("Successfully inserted %s into Database"%str(InsertableDict))
+    else:
+        print("Checksum error. Not writing sensor data to database.")
 
 
 def process_version(d):
