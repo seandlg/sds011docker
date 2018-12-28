@@ -1,4 +1,4 @@
-This AQI-Sensor project connects to a SDS011 nova PM Sensor & periodically queries it for data. It saves the data in a MongoDB database & runs a light nodejs-Webapp, that displays the data in a simple graph. The entire applicatoin is dockerized and ready to deploy.
+This AQI-Sensor project connects to a SDS011 nova PM Sensor & periodically queries it for data. It saves the data in a MongoDB database & runs a light nodejs-Webapp, that displays the data in a simple graph. The entire application is dockerized and ready to deploy.
 
 Run the app as follows:
 1) Connect the sensor to your USB-port & ensure that it is accessible under /dev/ttyUSB0 (this is standard for many Linux based systems such as Ubuntu)
