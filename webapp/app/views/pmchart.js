@@ -10,15 +10,22 @@ function httpGet(theUrl) { // synchronous, but doesn't matter for localhost
 var btn1 = document.getElementById("btn1")
 var btn2 = document.getElementById("btn2")
 var btn3 = document.getElementById("btn3")
+var btn4 = document.getElementById("btn4")
 var start_date_field = document.getElementById("start_date_field")
 var end_date_field = document.getElementById("end_date_field")
+var custom_range_button = document.getElementById("custom_range_button")
 
 var datepicker = new Datepickk();
+var datePickerStartDate = null
+var datePickerEndDate = null
+
 datepicker.range = true;
 
 datepicker.onClose = function() {
-  start_date_field.value = datepicker.selectedDates[0].toDateString()
-  end_date_field.value = datepicker.selectedDates[1].toDateString()
+  datePickerStartDate = new Date (datepicker.selectedDates[0]).setHours(0, 0, 0, 0)
+  datePickerEndDate = new Date (datepicker.selectedDates[1]).setHours(23, 59, 59, 0)
+  start_date_field.value = new Date(datePickerStartDate).toDateString()
+  end_date_field.value = new Date(datePickerEndDate).toDateString()
   console.log(datepicker.selectedDates);
 };
 
@@ -26,13 +33,21 @@ function setButtonActive(button) {
   btn1.classList.remove("active")
   btn2.classList.remove("active")
   btn3.classList.remove("active")
+  btn4.classList.remove("active")
   button.classList.add("active")
 }
 
-function updateGraph(span, startDate, endDate) {
+custom_range_button.onclick = function() {
+  updateGraph("", datePickerStartDate, datePickerEndDate)
+  setButtonActive(btn4)
+};
+
+
+var beginningOfToday = new Date().setHours(0, 0, 0, 0)
+var endOfToday = new Date().setHours(23, 59, 59, 0)
+
+function updateGraph(span, startDate = beginningOfToday, endDate = endOfToday) {
   removeData(myChart)
-  var today_morning = new Date().setHours(0, 0, 0, 0) / 1000.0
-  var today_night = new Date().setHours(24, 0, 0, 0) / 1000.0
 
   function addDataToGraph(startDate, endDate) {
     var data = JSON.parse(httpGet('getAQIData/?start=' + startDate + '&end=' + endDate))
@@ -44,24 +59,24 @@ function updateGraph(span, startDate, endDate) {
     case 'intraday':
       console.log("Updating to Intraday Data")
       setButtonActive(btn1)
-      addDataToGraph(today_morning, today_night)
+      addDataToGraph(startDate, endDate)
       break
     case '5day':
       console.log("Updating to 5-day data")
       setButtonActive(btn2)
-      startDate = new Date(today_morning).setDate(new Date(today_morning).getDate() - 5)
-      addDataToGraph(startDate, today_night)
+      startDate = new Date(beginningOfToday).setDate(new Date(beginningOfToday).getDate() - 5)
+      addDataToGraph(startDate, endDate)
       break
     case 'month':
       console.log("Updating to monthly data")
       setButtonActive(btn3)
-      startDate = new Date(today_morning).setMonth(new Date(today_morning).getMonth() - 1)
-      addDataToGraph(startDate, today_night)
+      startDate = new Date(beginningOfToday).setMonth(new Date(beginningOfToday).getMonth() - 1)
+      addDataToGraph(startDate, endDate)
       break
     default:
       console.log("Updating to custom data")
-      startDate = new Date().setHours(0, 0, 0, 0) / 1000.0
-      endDate = new Date().setHours(24, 0, 0, 0) / 1000.0
+      startDate = startDate
+      endDate = endDate
       addDataToGraph(startDate, endDate)
   }
 }

@@ -39,6 +39,7 @@
           <a id="btn1" class="nav-link active" href="#1day" onclick="updateGraph('intraday')">Intraday</a>
           <a id="btn2" class="nav-link" href="#5day" onclick="updateGraph('5day')">5-day</a>
           <a id="btn3" class="nav-link" href="#month" onclick="updateGraph('month')">Month</a>
+          <a id="btn4" class="nav-link" href="#custom">Custom</a>
           <a class="nav-link" href="AQIData.json">Export AQI-Data</a>
         </nav>
       </div>
@@ -47,7 +48,7 @@
     <main role="main" class="inner cover">
       <div class="input-group mb-3" style="width: fit-content; margin: 0 auto; margin-top: 16px">
         <div class="input-group-prepend">
-          <button class="btn btn-primary" type="button" id="button-addon1">Show for custom date range</button>
+          <button class="btn btn-primary" type="button" id="custom_range_button">Show for custom date range</button>
         </div>
         <input id="start_date_field" type="text" class="form-control" placeholder="Start date" aria-label="Start date" onclick="datepicker.show()">
         <input id="end_date_field" type="text" class="form-control" placeholder="End date" aria-label="End date" onclick="datepicker.show()">
