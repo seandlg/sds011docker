@@ -22,8 +22,8 @@ var datePickerEndDate = null
 datepicker.range = true;
 
 datepicker.onClose = function() {
-  datePickerStartDate = new Date (datepicker.selectedDates[0]).setHours(0, 0, 0, 0)
-  datePickerEndDate = new Date (datepicker.selectedDates[1]).setHours(23, 59, 59, 0)
+  datePickerStartDate = new Date(datepicker.selectedDates[0]).setHours(0, 0, 0, 0)
+  datePickerEndDate = new Date(datepicker.selectedDates[1]).setHours(23, 59, 59, 0)
   start_date_field.value = new Date(datePickerStartDate).toDateString()
   end_date_field.value = new Date(datePickerEndDate).toDateString()
   console.log(datepicker.selectedDates);
@@ -45,13 +45,15 @@ custom_range_button.onclick = function() {
 
 var beginningOfToday = new Date().setHours(0, 0, 0, 0)
 var endOfToday = new Date().setHours(23, 59, 59, 0)
+var data = JSON.parse(httpGet('getAQIData/?start=' + parseInt(beginningOfToday / 1000) + '&end=' + parseInt(endOfToday / 1000)))
+var [label_array, pm25_array, pm10_array] = extractAQIData(data)
 
 function updateGraph(span, startDate = beginningOfToday, endDate = endOfToday) {
   removeData(myChart)
 
   function addDataToGraph(startDate, endDate) {
-    var data = JSON.parse(httpGet('getAQIData/?start=' + startDate + '&end=' + endDate))
-    var [label_array, pm25_array, pm10_array] = extractAQIData(data)
+    data = JSON.parse(httpGet('getAQIData/?start=' + parseInt(startDate / 1000) + '&end=' + parseInt(endDate / 1000)))
+    [label_array, pm25_array, pm10_array] = extractAQIData(data)
     addData(myChart, label_array, pm25_array, pm10_array)
   }
 
@@ -107,12 +109,6 @@ function removeData(chart) {
   });
   chart.update();
 }
-
-// Initial setup to 1 day
-var startDate = new Date().setHours(0, 0, 0, 0) / 1000.0
-var endDate = new Date().setHours(24, 0, 0, 0) / 1000.0
-var data = JSON.parse(httpGet('getAQIData/?start=' + startDate + '&end=' + endDate))
-var [label_array, pm25_array, pm10_array] = extractAQIData(data)
 
 var myChart = new Chart(ctx, {
   type: 'line',
