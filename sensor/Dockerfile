@@ -13,6 +13,9 @@ RUN chmod 0644 /etc/cron.d/hello-cron
 # Apply cron job
 RUN crontab /etc/cron.d/hello-cron
 
+# Set the timezone to Germany
+RUN ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
 # Set the working directory to /app
 WORKDIR /app
 

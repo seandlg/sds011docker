@@ -29,20 +29,20 @@ app.get('/', (req, res) => {
   res.sendFile(path + "index.html");
 });
 
+app.get('/datepickk.css', (req, res) => {
+  res.sendFile(path + "datepickk.css");
+});
+
+app.get('/datepickk.js', (req, res) => {
+  res.sendFile(path + "datepickk.js");
+});
+
 app.get('/style.css', (req, res) => {
   res.sendFile(path + "style.css");
 });
 
 app.get('/pmchart.js', (req, res) => {
   res.sendFile(path + "pmchart.js");
-});
-
-app.get('/AQIData.txt', (req, res) => {
-  res.sendFile("/data/AQIData.txt");
-});
-
-app.get('/AQIData.csv', (req, res) => {
-  res.sendFile("/data/AQIData.csv");
 });
 
 app.get('/AQIData.json', (req, res) => {
@@ -53,12 +53,40 @@ app.get('/AQIData.json', (req, res) => {
     var dbo = db.db("SensorData");
     dbo.collection("PMValues").find({}).toArray(function(err, result) {
       if (err) throw err;
+      // console.log(result);
+      res.send(result)
+      db.close();
+    });
+  });
+});
+
+app.get('/getAQIData', (req, res) => {
+  let start = parseInt(req.query.start);
+  let end = parseInt(req.query.end);
+  console.log("Querying data points between: ")
+  console.log("Start = " + start)
+  console.log("End = " + end)
+
+  client.connect(url, {
+    useNewUrlParser: true
+  }, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("SensorData");
+    dbo.collection("PMValues").find({
+      epoch_timestamp: {
+        $gt: start,
+        $lt: end
+      }
+    }).toArray(function(err, result) {
+      if (err) throw err;
       console.log(result);
       res.send(result)
       db.close();
     });
   });
 });
+
+app.use(express.static('node_modules'))
 
 app.listen(PORT, HOST);
 

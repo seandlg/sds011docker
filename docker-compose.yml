@@ -5,7 +5,7 @@ services:
     build: ./webapp
     container_name: webapp
     volumes:
-    - /home/sean/Coding/DockerAQISensor/webapp/app:/app/dev/ # strictly for development purposes
+    - /home/sean/Coding/DockerAQISensor/webapp/app:/app/ # strictly for development purposes
     depends_on:
     - sensor
     - mongodb
