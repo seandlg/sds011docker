@@ -4,8 +4,8 @@ services:
     image: webapp
     build: ./webapp
     container_name: webapp
-    volumes:
-    - /home/sean/Coding/DockerAQISensor/webapp/app:/app/ # strictly for development purposes
+    #volumes:
+    #- ./webapp/app:/app/ # strictly for development purposes; this statement overrides the /app folder, therefore the developer has to manually run `npm install`
     depends_on:
     - sensor
     - mongodb
