@@ -17,6 +17,13 @@ var myChart = new Chart(ctx, {
         fill: false,
         borderWidth: 1,
         borderColor: 'rgba(66, 139, 202, 1)'
+      },
+      {
+        label: 'Good AQI-limit',
+        data: [],
+        fill: false,
+        borderWidth: 1,
+        borderColor: 'rgba(40, 167, 69, 1)'
       }
     ],
 
@@ -113,7 +120,7 @@ function updateGraph(span, startDate = beginningOfToday, endDate = endOfToday) {
   function addDataToGraph(startDate, endDate) {
     var data = JSON.parse(httpGet('getAQIData/?start=' + parseInt(startDate / 1000) + '&end=' + parseInt(endDate / 1000)))
     var [label_array, pm25_array, pm10_array] = extractAQIData(data)
-    addData(myChart, label_array, pm25_array, pm10_array)
+    updateChartWithData(myChart, label_array, pm25_array, pm10_array)
   }
 
   switch (span) {
@@ -154,17 +161,10 @@ function extractAQIData(jsonData) {
   return [label_array, pm25_array, pm10_array]
 }
 
-function addData(chart, labels, data0, data1) {
+function updateChartWithData(chart, labels, data0, data1, ) {
   chart.data.labels = labels
   chart.data.datasets[0].data = data0
   chart.data.datasets[1].data = data1
-  chart.update();
-}
-
-function removeData(chart) {
-  chart.data.labels = []
-  chart.data.datasets.forEach((dataset) => {
-    dataset.data = []
-  });
+  chart.data.datasets[2].data = new Array(data0.length).fill(30);
   chart.update();
 }

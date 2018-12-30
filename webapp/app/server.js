@@ -79,7 +79,6 @@ app.get('/getAQIData', (req, res) => {
       }
     }).toArray(function(err, result) {
       if (err) throw err;
-      console.log(result);
       res.send(result)
       db.close();
     });
