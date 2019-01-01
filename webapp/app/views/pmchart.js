@@ -22,8 +22,8 @@ var myChart = new Chart(ctx, {
         label: 'Good AQI-limit',
         data: [],
         fill: false,
-        borderWidth: 1,
-        borderColor: 'rgba(40, 167, 69, 1)'
+        borderColor: 'rgba(40, 167, 69, 1)',
+        pointStyle: 'line'
       }
     ],
 
@@ -165,6 +165,6 @@ function updateChartWithData(chart, labels, data0, data1, ) {
   chart.data.labels = labels
   chart.data.datasets[0].data = data0
   chart.data.datasets[1].data = data1
-  chart.data.datasets[2].data = new Array(data0.length).fill(30);
+  chart.data.datasets[2].data = new Array(data0.length).fill(50);
   chart.update();
 }
