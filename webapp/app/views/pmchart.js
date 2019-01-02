@@ -5,21 +5,21 @@ var myChart = new Chart(ctx, {
   data: {
     labels: [],
     datasets: [{
-        label: 'PM 2.5',
+        label: 'PM 2.5 (µg/m³)',
         data: [],
         fill: false,
         borderWidth: 1,
         borderColor: 'rgba(217, 83, 79, 1)'
       },
       {
-        label: 'PM 10',
+        label: 'PM 10 (µg/m³)',
         data: [],
         fill: false,
         borderWidth: 1,
         borderColor: 'rgba(66, 139, 202, 1)'
       },
       {
-        label: 'Good AQI-limit',
+        label: 'Good AQ-limit (µg/m³)',
         data: [],
         fill: false,
         borderColor: 'rgba(40, 167, 69, 1)',
@@ -34,7 +34,7 @@ var myChart = new Chart(ctx, {
     maintainAspectRatio: false,
     title: {
       display: true,
-      text: 'AQI-Data'
+      text: 'Air quality data'
     },
     tooltips: {
       mode: 'index',
@@ -56,7 +56,7 @@ var myChart = new Chart(ctx, {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'PM-Value'
+          labelString: 'PM-Value (µg/m³)'
         },
         ticks: {
           beginAtZero: true
@@ -118,8 +118,8 @@ function updateGraph(span, startDate = beginningOfToday, endDate = endOfToday) {
   // removeData(myChart)
 
   function addDataToGraph(startDate, endDate) {
-    var data = JSON.parse(httpGet('getAQIData/?start=' + parseInt(startDate / 1000) + '&end=' + parseInt(endDate / 1000)))
-    var [label_array, pm25_array, pm10_array] = extractAQIData(data)
+    var data = JSON.parse(httpGet('getAQData/?start=' + parseInt(startDate / 1000) + '&end=' + parseInt(endDate / 1000)))
+    var [label_array, pm25_array, pm10_array] = extractAQData(data)
     updateChartWithData(myChart, label_array, pm25_array, pm10_array)
   }
 
@@ -149,7 +149,7 @@ function updateGraph(span, startDate = beginningOfToday, endDate = endOfToday) {
   }
 }
 
-function extractAQIData(jsonData) {
+function extractAQData(jsonData) {
   let label_array = []
   let pm25_array = []
   let pm10_array = []

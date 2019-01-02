@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="A simple AQI website">
+  <meta name="description" content="A simple air quality monitoring website">
   <meta name="author" content="seandlg">
-  <title>AQI Sensor Website</title>
+  <title>Air quality with SDS011</title>
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
   <script src="chart.js/dist/Chart.bundle.js"></script>
@@ -20,13 +20,13 @@
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
       <div class="inner">
-        <h3 class="masthead-brand">AQI @ Cologne</h3>
+        <h3 class="masthead-brand">Air quality @ Cologne</h3>
         <nav class="nav nav-masthead justify-content-center">
           <a id="btn1" class="nav-link active" href="#1day" onclick="updateGraph('intraday')">Intraday</a>
           <a id="btn2" class="nav-link" href="#5day" onclick="updateGraph('5day')">5-day</a>
           <a id="btn3" class="nav-link" href="#month" onclick="updateGraph('month')">Month</a>
           <a id="btn4" class="nav-link" href="#custom">Custom</a>
-          <a class="nav-link" href="AQIData.json">Export AQI-Data</a>
+          <a class="nav-link" href="AQData.json">Export AQ-Data</a>
         </nav>
       </div>
     </header>
@@ -47,7 +47,7 @@
 
     <footer class="mastfoot mt-auto">
       <div class="inner">
-        <p>A simple AQI-monitor by <a href="https://github.com/seandlg">seandlg</a></p>
+        <p>A simple AQ-monitor by <a href="https://github.com/seandlg">seandlg</a></p>
       </div>
     </footer>
   </div>

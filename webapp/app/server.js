@@ -45,7 +45,7 @@ app.get('/pmchart.js', (req, res) => {
   res.sendFile(path + "pmchart.js");
 });
 
-app.get('/AQIData.json', (req, res) => {
+app.get('/AQData.json', (req, res) => {
   client.connect(url, {
     useNewUrlParser: true
   }, function(err, db) {
@@ -60,7 +60,7 @@ app.get('/AQIData.json', (req, res) => {
   });
 });
 
-app.get('/getAQIData', (req, res) => {
+app.get('/getAQData', (req, res) => {
   let start = parseInt(req.query.start);
   let end = parseInt(req.query.end);
   console.log("Querying data points between: ")
