@@ -1,5 +1,5 @@
 # Use an official node runtime as a parent image
-FROM node:lts-alpine
+FROM arm32v6/node:11.6-alpine
 
 # Create app directory
 WORKDIR /app
