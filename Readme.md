@@ -10,5 +10,6 @@ Checkout into the `master` branch. Run the app as follows:
 ### Raspbian (ARMv6 instruction set)
 Checkout into the `raspberry` branch. Run the app as follows:
 1) Follow step 1 from the Linux-based OS installation above. Then install dependencies: `pip install pymongo pyserial`
-2) Create a cron job to run `serial.py` every 15 minutes, i.e. `sudo crontab -e` (to edit the root user's crontab) and then add the line `*/15 * * * * /usr/bin/python2.7 /path/to/serial.py`. You will likely need the root priviliges to access `/dev/ttyUSB0`.
-3) Run docker-compose: `sudo docker-compose up -d`
+2) Edit `serial.py` && `server.js` and input your mlab database info. Check the [Medium article](https://medium.com/@seandlg/building-a-dockerized-minimal-web-interface-for-a-sds011-air-quality-sensor-ab1ea7467e64 "Building a dockerized minimal web interface for a SDS011 air quality sensor") for an explanation of why this is necessary.
+3) Create a cron job to run `serial.py` every 15 minutes, i.e. `sudo crontab -e` (to edit the root user's crontab) and then add the line `*/15 * * * * /usr/bin/python2.7 /path/to/serial.py`. You will likely need the root priviliges to access `/dev/ttyUSB0`.
+4) Run docker-compose: `sudo docker-compose up -d`
