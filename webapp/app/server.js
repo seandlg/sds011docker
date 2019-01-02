@@ -4,7 +4,7 @@ const express = require('express');
 const mongodb = require('mongodb');
 
 // Constants
-const url = 'mongodb://database:27017/sensordatadb'
+const url = "mongodb://username:password@subdomain.mlab.com:port/dbname"
 const client = mongodb.MongoClient;
 const PORT = 8080;
 const HOST = '0.0.0.0';
@@ -18,6 +18,7 @@ client.connect(url, {
     console.log('Database is not connected.')
   } else {
     console.log('Database connected!')
+    db.close();
   }
 });
 
