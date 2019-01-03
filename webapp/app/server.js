@@ -53,7 +53,9 @@ app.get('/AQData.json', (req, res) => {
   }, function(err, db) {
     if (err) throw err;
     var dbo = db.db(dbname);
-    dbo.collection("PMValues").find({}).toArray(function(err, result) {
+    dbo.collection("PMValues").find({}).sort({
+      epoch_timestamp: 1
+    }).toArray(function(err, result) {
       if (err) throw err;
       // console.log(result);
       res.send(result)
@@ -79,6 +81,8 @@ app.get('/getAQData', (req, res) => {
         $gt: start,
         $lt: end
       }
+    }).sort({
+      epoch_timestamp: 1
     }).toArray(function(err, result) {
       if (err) throw err;
       res.send(result)
