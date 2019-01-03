@@ -4,7 +4,8 @@ const express = require('express');
 const mongodb = require('mongodb');
 
 // Constants
-const url = 'mongodb://database:27017/sensordatadb'
+const url = 'mongodb://database:27017/sensordata'
+const dbname = "sensordata"
 const client = mongodb.MongoClient;
 const PORT = 8080;
 const HOST = '0.0.0.0';
@@ -50,8 +51,10 @@ app.get('/AQData.json', (req, res) => {
     useNewUrlParser: true
   }, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("SensorData");
-    dbo.collection("PMValues").find({}).toArray(function(err, result) {
+    var dbo = db.db(dbname);
+    dbo.collection("PMValues").find({}).sort({
+      epoch_timestamp: 1
+    }).toArray(function(err, result) {
       if (err) throw err;
       // console.log(result);
       res.send(result)
@@ -71,12 +74,14 @@ app.get('/getAQData', (req, res) => {
     useNewUrlParser: true
   }, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("SensorData");
+    var dbo = db.db(dbname);
     dbo.collection("PMValues").find({
       epoch_timestamp: {
         $gt: start,
         $lt: end
       }
+    }).sort({
+      epoch_timestamp: 1
     }).toArray(function(err, result) {
       if (err) throw err;
       res.send(result)

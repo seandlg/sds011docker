@@ -48,8 +48,8 @@ def process_data(d):
     pm10 = r[1]/10.0
     checksum = sum(ord(v) for v in d[2:8])%256
     if (checksum==r[2] and r[3]==0xab): # write to database if the checksum is okay
-        mongoClient = pymongo.MongoClient("mongodb://database:27017/sensordatadb")
-        mongoDB = mongoClient["SensorData"]
+        mongoClient = pymongo.MongoClient("mongodb://database:27017/sensordata")
+        mongoDB = mongoClient["sensordata"]
         SensorDataCollection = mongoDB["PMValues"]
         readable_timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
         epoch_timestamp = int(time.time())
