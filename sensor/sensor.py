@@ -49,7 +49,7 @@ def process_data(d):
     checksum = sum(ord(v) for v in d[2:8])%256
     if (checksum==r[2] and r[3]==0xab): # write to database if the checksum is okay
         mongoClient = pymongo.MongoClient("mongodb://username:password@subdomain.mlab.com:port/dbname")
-        db = mongoClient.sensordata # where sensordata is the database name
+        db = mongoClient.dbname # where you have to replace dbname
         collection = db.PMValues
         readable_timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
         epoch_timestamp = int(time.time())
